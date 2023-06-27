@@ -70,3 +70,6 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+GDS213.2_QuickCooking/obj/
+GDS213.2_QuickCooking/Logs/
+GDS213.2_QuickCooking/Library/

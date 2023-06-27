@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35edb012cb081e84fa594cef6923c7ad, type: 3}
+  m_Name: Fruit Salad
+  m_EditorClassIdentifier: 
+  id: Fruit Salad
+  ingredients:
+  - {fileID: 11400000, guid: 23724d22e113b754c8dc7d6e89086018, type: 2}
+  - {fileID: 11400000, guid: dd344ed3844617641843a47244a44544, type: 2}
+  - {fileID: 11400000, guid: 1ea99c1181ba0d54884a4cd57d43af71, type: 2}
+  preparationMethod: 00000000
+  cookingMethod: 0
+  cookingTime: 2
+  cookingTemperature: 100
+  nutritionalValue: 22.8
