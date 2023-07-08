@@ -19,10 +19,6 @@ public class UI_PersistentCanvas : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
-            foreach (IngredientSlot slot in inventorySlots)
-            {
-                slot.UpdateIcon(null);
-            }
         }
     }
 
@@ -37,7 +33,10 @@ public class UI_PersistentCanvas : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        foreach (IngredientSlot slot in inventorySlots)
+        {
+            slot.UpdateIcon(null);
+        }
     }
 
     // Update is called once per frame

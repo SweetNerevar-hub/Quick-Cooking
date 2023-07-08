@@ -5,10 +5,10 @@ using UnityEngine;
 public class Fridge : MonoBehaviour, ILoggable
 {
     [SerializeField] private bool debug = false;
-    [SerializeField] private int minimumRequiredIngredients;
     [SerializeField] private GameObject fridge;
+    [SerializeField] private int startingIngredientsPerGroup = 3;
 
-    private int ingredientsPerGroup = 3;
+    private int ingredientsPerGroup = 0;
     private List<Ingredient> currentIngredients;
     private IngredientSlot[] ingredientIcons;
 
@@ -24,15 +24,16 @@ public class Fridge : MonoBehaviour, ILoggable
         {
             Instance = this;
             ingredientIcons = fridge.GetComponentsInChildren<IngredientSlot>();
-            foreach (IngredientSlot icon in ingredientIcons)
-            {
-                icon.UpdateIcon(null);
-            }
         }
     }
 
     void Start()
     {
+        ingredientsPerGroup = startingIngredientsPerGroup;
+        foreach (IngredientSlot icon in ingredientIcons)
+        {
+            icon.UpdateIcon(null);
+        }
         PopulateFridge();
     }
 
