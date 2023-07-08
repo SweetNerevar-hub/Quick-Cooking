@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Game/00_MainMenu.unity
+    guid: 7f46ba9c792a9464c88ba2b2e2e3ed1f
+  - enabled: 1
+    path: Assets/Scenes/Game/01_Fridge.unity
+    guid: 1de11c26404af334da88e4dbee1ce20e
+  - enabled: 1
+    path: Assets/Scenes/Game/02_Preparation.unity
+    guid: 21dc698fc223b004d8a11d823fd0a84f
+  - enabled: 1
+    path: Assets/Scenes/Game/03_FryingPan.unity
+    guid: 3f463b7561f432a43a11a0e3f49f7415
+  - enabled: 1
+    path: Assets/Scenes/Game/04_Reward.unity
+    guid: b3c90979af4176240a5edd03c0e54997
   m_configObjects: {}

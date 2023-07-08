@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Macademia Nuts
   foodGroup: 3
-  cost: 15
+  sprite: {fileID: 21300000, guid: fa3924bde7f974cb799caaa5594f3409, type: 3}

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Banana
   m_EditorClassIdentifier: 
   id: Banana
-  foodGroup: 0
-  cost: 4.99
+  foodGroup: 1
+  sprite: {fileID: 21300000, guid: 50e0347d981414d189ff77217bc6e69c, type: 3}

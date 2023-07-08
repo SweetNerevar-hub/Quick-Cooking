@@ -7,11 +7,11 @@ public class Ingredient : ScriptableObject
 {
     [SerializeField] private string id;
     [SerializeField] private FoodGroupType foodGroup;
-    [SerializeField] private float cost;
+    [SerializeField] private Sprite sprite;
 
     public string ID { get { return id; } }
     public FoodGroupType FoodGroup { get { return foodGroup; } }
-    public float Cost { get { return cost; } }
+    public Sprite Sprite { get { return sprite; } }
 }
 
-public enum FoodGroupType { fruit, vegetable, grain, protein, dairy }
+public enum FoodGroupType { dairy = 0, fruit = 1, grain = 2, protein = 3, vegetable = 4 }

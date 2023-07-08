@@ -1,188 +1,155 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour, ILoggable
 {
     [SerializeField] private bool debug = false;
-    [SerializeField] private float initialFunds = 100;
-    [SerializeField] private float weeklyFunds = 100;
-    [SerializeField] private Text wellbeingText;
-    [SerializeField] private Text fundsText;
-    [SerializeField] private Text purchasedListText;
-    [SerializeField] private Fridge fridge;
-    [SerializeField] private Text[] mealsText;
-    [SerializeField] private Meal[] mealDatabase;
+    [SerializeField] private List<Ingredient> ingredientDatabase; //tracks all ingredients
+    [Header("Game Start Properties")]
+    [SerializeField] private int unlockedGroupIngredients = 3;
+    [SerializeField] private bool dairyUnlocked, fruitUnlocked, grainUnlocked, proteinUnlocked, vegetableUnlocked = true;
 
-    private int dayIndex = 0;
-    private float healthRating = 0;
-    private float currentFunds = 0f;
+
     public readonly Dictionary<FoodGroupType, bool> UnlockedFoodGroups = new Dictionary<FoodGroupType, bool>
     {
-        { FoodGroupType.fruit, true},
-        { FoodGroupType.vegetable, false},
+        { FoodGroupType.dairy, false},
+        { FoodGroupType.fruit, false},
         { FoodGroupType.grain, false},
         { FoodGroupType.protein, false},
-        { FoodGroupType.dairy, false}
+        { FoodGroupType.vegetable, true}
     };
-    private List<Ingredient> purchasedIngredients = new List<Ingredient>();
-    private Meal recipe;
+    public readonly List<Ingredient> UnlockedIngredients = new List<Ingredient>();
 
-    public float CurrentFunds 
-    { 
-        get 
-        { 
-            return currentFunds; 
-        }
-        set
-        {
-            currentFunds = value;
-            UpdateFundsText();
-        }
-    }
+    public static GameManager Instance { get; private set; }
 
     private void Awake()
     {
-        fridge.OnAttemptPurchaseEvent += PurchaseIngredient;
-        mealsText[0].transform.parent.parent.gameObject.SetActive(false);
-        CookingMethod.SelectCookingMethodEvent += CookMeal;
-        CookingMethod.CookingCompleteEvent += CompleteCooking;
-    }
-
-    private void CompleteCooking(float outcome)
-    {
-        healthRating = Mathf.Clamp(healthRating + outcome, -1, 1);
-        wellbeingText.text = $"Wellbeing: {healthRating}";
-        purchasedListText.transform.parent.gameObject.SetActive(true);
-        fridge.CheckFridge();
-        UpdatePurchasedText();
-        NextDay();
-    }
-
-    private void NextDay()
-    {
-        dayIndex++;
-        if (dayIndex >= 6)
+        if (Instance != null)
         {
-            CurrentFunds += weeklyFunds;
-            dayIndex = 0;
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        UnlockedFoodGroups[FoodGroupType.dairy] = dairyUnlocked;
+        UnlockedFoodGroups[FoodGroupType.fruit] = fruitUnlocked;
+        UnlockedFoodGroups[FoodGroupType.grain] = grainUnlocked;
+        UnlockedFoodGroups[FoodGroupType.protein] = proteinUnlocked;
+        UnlockedFoodGroups[FoodGroupType.vegetable] = vegetableUnlocked;
+        unlockedGroupIngredients = unlockedGroupIngredients <= 0 ? 1 : unlockedGroupIngredients;
+        Log($"Unlocked random ingredients in {FoodGroupType.dairy.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.dairy, unlockedGroupIngredients).ToString().ToUpper()}");
+        Log($"Unlocked random ingredients in {FoodGroupType.fruit.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.fruit, unlockedGroupIngredients).ToString().ToUpper()}");
+        Log($"Unlocked random ingredients in {FoodGroupType.grain.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.grain, unlockedGroupIngredients).ToString().ToUpper()}");
+        Log($"Unlocked random ingredients in {FoodGroupType.protein.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.protein, unlockedGroupIngredients).ToString().ToUpper()}");
+        Log($"Unlocked random ingredients in {FoodGroupType.vegetable.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.vegetable, unlockedGroupIngredients).ToString().ToUpper()}");
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
         }
     }
 
-    private void CookMeal(CookingMethod cookingMethod)
+    private void Start()
     {
-        if (purchasedIngredients.Count > 0 && recipe != null)
+    }
+
+    /// <summary>
+    /// Returns all unlocked ingredients within a given food group.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public List<Ingredient> GetFoodGroupIngredients(List<Ingredient> ingredients, FoodGroupType type)
+    {
+        List<Ingredient> groupIngredients = new List<Ingredient>();
+        foreach (Ingredient ingredient in ingredients)
         {
-            foreach (Ingredient i in recipe.Ingredients)
+            if (ingredient.FoodGroup == type)
             {
-                purchasedIngredients.Remove(i);
+                groupIngredients.Add(ingredient);
             }
-            cookingMethod.Cook(recipe);
-            recipe = null;
         }
+        Log($"Found {groupIngredients.Count} ingredients in the group {type.ToString().ToUpper()}.");
+        return groupIngredients.Count > 0 ? groupIngredients : null;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Returns the given amount of randomly selected of ingredients from the provided list of ingredients.
+    /// </summary>
+    /// <param name="ingredients"></param>
+    /// <param name="maxAmount"></param>
+    /// <returns></returns>
+    public List<Ingredient> GetRandomIngredients(List<Ingredient> ingredients, int maxAmount)
     {
-        CurrentFunds = initialFunds;
-        fridge.CheckFridge();
-        UpdatePurchasedText();
-        wellbeingText.text = $"Wellbeing: {healthRating}";
-    }
-
-    private void UpdateFundsText()
-    {
-        fundsText.text = $"Funds: {currentFunds.ToString("C2")}";
-    }
-
-    private void UpdatePurchasedText()
-    {
-        string text = string.Empty;
-        if (purchasedIngredients.Count > 0)
+        if (ingredients.Count == 0) { return null; }
+        List<Ingredient> randomIngredients = ingredients;
+        while (randomIngredients.Count > maxAmount)
         {
-            for (int i = 0; i < purchasedIngredients.Count; i++)
+            int ingredientIndex = Random.Range(0, ingredients.Count);
+            randomIngredients.RemoveAt(ingredientIndex);
+            Log($"Removed {ingredientIndex} from the current ingredient population.");
+        }
+        Log($"Generated a list with a maximum of {maxAmount} random ingredients from the provided list of ingredients.");
+        return randomIngredients;
+    }
+
+    /// <summary>
+    /// Adds 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public bool UnlockRandomIngredientInGroup(FoodGroupType type, int amount = 1)
+    {
+        if (UnlockedFoodGroups[type] == true)
+        {
+            Log($"Getting all ingredients for food group: {type.ToString().ToUpper()}");
+            List<Ingredient> groupIngredients = GetFoodGroupIngredients(ingredientDatabase, type);
+            if (groupIngredients == null)
             {
-                text += $"{i + 1}. {purchasedIngredients[i].ID} ({char.ToUpper(purchasedIngredients[i].FoodGroup.ToString()[0])}{purchasedIngredients[i].FoodGroup.ToString().Substring(1)})";
-                if (i != purchasedIngredients.Count)
+                Log($"Database does not contain any ingredients in the group {type.ToString().ToUpper()}", 1);
+                return false;
+            }
+            Log($"Getting unlocked ingredients for food group: {type.ToString().ToUpper()}");
+            List<Ingredient> unlockedGroupIngredients = GetFoodGroupIngredients(UnlockedIngredients, type);
+            if (unlockedGroupIngredients != null && groupIngredients.Count == unlockedGroupIngredients.Count)
+            {
+                Log($"All ingredients in group {type.ToString().ToUpper()} have been unlocked!", 1);
+                return false;
+            }
+            else if(unlockedGroupIngredients == null)
+            {
+                unlockedGroupIngredients= new List<Ingredient>();
+            }
+            int index = 0;
+            while (index < amount)
+            {
+                if(unlockedGroupIngredients != null && groupIngredients.Count == unlockedGroupIngredients.Count)
                 {
-                    text += '\n';
+                    Log($"All ingredients in group {type.ToString().ToUpper()} have been unlocked!", 1);
+                    break;
                 }
-            }
-        }
-        purchasedListText.text = text;
-    }
-
-    private bool PurchaseIngredient(Ingredient ingredient)
-    {
-        if (CurrentFunds - ingredient.Cost < 0)
-        {
-            return false;
-        }
-        CurrentFunds -= ingredient.Cost;
-        purchasedIngredients.Add(ingredient);
-        UpdatePurchasedText();
-        return true;
-    }
-
-    public void SkipDay()
-    {
-        healthRating = Mathf.Clamp(healthRating - 0.05f, -1, 1);
-        wellbeingText.text = $"Wellbeing: {healthRating}";
-        mealsText[0].transform.parent.parent.gameObject.SetActive(false);
-        NextDay();
-        purchasedListText.transform.parent.gameObject.SetActive(true);
-        fridge.CheckFridge();
-        UpdatePurchasedText();
-    }
-
-    public void ConfirmIngredients()
-    {
-        if (purchasedIngredients.Count > 0)
-        {
-            purchasedListText.transform.parent.gameObject.SetActive(false);
-            mealsText[0].transform.parent.parent.gameObject.SetActive(true);
-            for (int i = 0; i < mealsText.Length; i++)
-            {
-                if (i < mealDatabase.Length)
+                int random = Random.Range(0, groupIngredients.Count);
+                if (unlockedGroupIngredients != null)
                 {
-                    mealsText[i].text = $"{i + 1}. {mealDatabase[i].ID} [{mealDatabase[i].NutritionalValue}]";
-                    for(int x = 0; x < mealDatabase[i].Ingredients.Length; x++)
+                    while (unlockedGroupIngredients.Contains(groupIngredients[random]) == true) //already have this ingredient, try another random index
                     {
-                        if (purchasedIngredients.Contains(mealDatabase[i].Ingredients[x]) == false)
-                        {
-                            mealsText[i].color = Color.red;
-                            break;
-                        }
-                        else if(x == mealDatabase[i].Ingredients.Length - 1)
-                        {
-                            mealsText[i].color = Color.green;
-                        }
+                        random = Random.Range(0, groupIngredients.Count);
                     }
-                    mealsText[i].transform.parent.gameObject.SetActive(true);
                 }
-                else
-                {
-                    mealsText[i].transform.parent.gameObject.SetActive(false);
-                }
+                UnlockedIngredients.Add(groupIngredients[random]);
+                unlockedGroupIngredients.Add(groupIngredients[random]);
+                Log($"Unlocked group {type.ToString().ToUpper()} ingredient: {groupIngredients[random].name.ToString().ToUpper()}");
+                index++;
             }
+            return true;
         }
-    }
-
-    public void ConfirmMeal(int index)
-    {
-        for (int i = 0; i < mealDatabase[index].Ingredients.Length; i++)
-        {
-            if (purchasedIngredients.Contains(mealDatabase[index].Ingredients[i]) == false)
-            {
-                return;
-            }
-        }
-        recipe = mealDatabase[index];
-        Log($"Selected {recipe.ID}");
-        mealsText[0].transform.parent.parent.gameObject.SetActive(false);
+        Log($"Cannot unlock new food in group {type.ToString().ToUpper()} - food group has not been unlocked!", 1);
+        return false;
     }
 
     public void Log(string message, int level = 0)

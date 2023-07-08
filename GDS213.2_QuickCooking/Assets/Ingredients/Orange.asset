@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Orange
   m_EditorClassIdentifier: 
   id: Orange
-  foodGroup: 0
-  cost: 2.33
+  foodGroup: 1
+  sprite: {fileID: 21300000, guid: 6fc31519aded24a839c1af9e163b6c01, type: 3}

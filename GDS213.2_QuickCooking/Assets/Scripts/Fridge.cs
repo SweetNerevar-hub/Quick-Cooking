@@ -1,90 +1,90 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Fridge : MonoBehaviour, ILoggable
 {
-    public delegate bool PurchaseIngredientDelegate(Ingredient ingredient);
-
     [SerializeField] private bool debug = false;
-    [SerializeField] private int ingredientsMin, ingredientsMax;
-    [SerializeField] private Ingredient[] ingredientDatabase;
-    [SerializeField] private Text[] ingredientsText;
+    [SerializeField] private int minimumRequiredIngredients;
+    [SerializeField] private GameObject fridge;
 
+    private int ingredientsPerGroup = 3;
     private List<Ingredient> currentIngredients;
+    private IngredientSlot[] ingredientIcons;
 
-    public event PurchaseIngredientDelegate OnAttemptPurchaseEvent;
+    public static Fridge Instance { get; private set; }
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            ingredientIcons = fridge.GetComponentsInChildren<IngredientSlot>();
+            foreach (IngredientSlot icon in ingredientIcons)
+            {
+                icon.UpdateIcon(null);
+            }
+        }
+    }
+
     void Start()
     {
-        ingredientsMin = ingredientsMin < 0 ? ingredientsMax > 0 ? ingredientsMax : 0 : ingredientsMin;
-        ingredientsMax = ingredientsMax < ingredientsMin ? ingredientsMin : ingredientsMax;
+        PopulateFridge();
     }
 
-    private int GetRandomIngredientIndex()
+    public void PopulateFridge()
     {
-        return Random.Range(0, ingredientDatabase.Length);
+        Log($"Populating the fridge with random ingredients.");
+        currentIngredients = new List<Ingredient>();
+        foreach(KeyValuePair<FoodGroupType, bool> group in GameManager.Instance.UnlockedFoodGroups)
+        {
+            if (group.Value == true)
+            {
+                List<Ingredient> randomIngredients = GameManager.Instance.GetRandomIngredients(GameManager.Instance.GetFoodGroupIngredients(GameManager.Instance.UnlockedIngredients, group.Key), ingredientsPerGroup);
+                if (randomIngredients != null)
+                {
+                    currentIngredients.AddRange(randomIngredients);
+                    Log($"Added {randomIngredients.Count} from the group {group.Key} to the fridge.");
+                }
+            }
+        }
+        UpdateFridgeIngredientIcons();
     }
 
-    private void UpdateIngredientsText()
+    private void UpdateFridgeIngredientIcons()
     {
-        for (int i = 0; i < ingredientsText.Length; i++)
+        for (int i = 0; i < ingredientIcons.Length; i++)
         {
             if (i < currentIngredients.Count)
             {
-                string text = $"{i + 1}. {currentIngredients[i].ID} ({currentIngredients[i].FoodGroup}) [{currentIngredients[i].Cost.ToString("C2")}]";
-                ingredientsText[i].text = text;
-                ingredientsText[i].transform.parent.gameObject.SetActive(true);
+                int r = Random.Range(0, ingredientIcons.Length);
+                while (ingredientIcons[r].gameObject.activeSelf == true)
+                {
+                    r = Random.Range(0, ingredientIcons.Length);
+                }
+                ingredientIcons[r].UpdateIcon(currentIngredients[i]);
+                Log($"Updated fridge ingredient at index {r} to {currentIngredients[i].ID}.");
             }
             else
             {
-                ingredientsText[i].text = string.Empty;
-                ingredientsText[i].transform.parent.gameObject.SetActive(false);
+                break;
             }
         }
     }
 
-    private void AssignRandomIngredients(int minIngredients, int maxIngredients)
+    public bool PutIngredientBack(Ingredient ingredient)
     {
-        if (ingredientDatabase.Length > 0)
+        int random = Random.Range(0, ingredientIcons.Length);
+        while (ingredientIcons[random].CurrentIngredient != null)
         {
-            currentIngredients = new List<Ingredient>();
-            int ingredientCount = Random.Range(minIngredients, maxIngredients + 1);
-            for (int i = 0; i < ingredientCount; i++)
-            {
-                if (i >= ingredientDatabase.Length)
-                {
-                    break;
-                }
-                int r = GetRandomIngredientIndex();
-                while (currentIngredients.Contains(ingredientDatabase[r]) == true)
-                {
-                    r = GetRandomIngredientIndex();
-                }
-                currentIngredients.Add(ingredientDatabase[r]);
-                Log(currentIngredients[i].ID);
-            }
+            random = Random.Range(0, ingredientIcons.Length);
         }
-    }
-
-    public void CheckFridge()
-    {
-        AssignRandomIngredients(ingredientsMin, ingredientsMax);
-        UpdateIngredientsText();
-    }
-
-    public void PurchaseIngredient(int index)
-    {
-        if (index < currentIngredients.Count)
-        {
-            if(OnAttemptPurchaseEvent?.Invoke(currentIngredients[index]) == true)
-            {
-                currentIngredients.RemoveAt(index);
-                UpdateIngredientsText();
-            }
-        }
+        ingredientIcons[random].UpdateIcon(ingredient);
+        return true;
     }
 
     public void Log(string message, int level = 0)

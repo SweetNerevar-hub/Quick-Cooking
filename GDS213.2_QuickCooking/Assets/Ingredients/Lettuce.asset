@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Lettuce
   m_EditorClassIdentifier: 
   id: Lettuce
-  foodGroup: 1
-  cost: 2
+  foodGroup: 4
+  sprite: {fileID: 21300000, guid: 3e87be51823d846949ed08c33c74b463, type: 3}
