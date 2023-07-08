@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Lettuce
   foodGroup: 4
-  sprite: {fileID: 21300000, guid: 3e87be51823d846949ed08c33c74b463, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: 3e87be51823d846949ed08c33c74b463, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: fa96cf8ef213c4d9f857d76b486abb9b, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: fa96cf8ef213c4d9f857d76b486abb9b, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: fa96cf8ef213c4d9f857d76b486abb9b, type: 3}

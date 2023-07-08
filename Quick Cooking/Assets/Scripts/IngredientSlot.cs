@@ -24,7 +24,7 @@ public class IngredientSlot : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-        image.sprite = ingredient.Sprite;
+        image.sprite = ingredient.FridgeSprite;
         if(gameObject.activeSelf == false)
         {
             gameObject.SetActive(true);
@@ -52,6 +52,10 @@ public class IngredientSlot : MonoBehaviour
                     }
                     break;
                 case 2: //preparation scene
+                    if (CuttingBoard.Instance.PutIngredientOnBoard(CurrentIngredient) == true)
+                    {
+                        UpdateIcon(null);
+                    }
                     break;
             }
         }

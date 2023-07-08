@@ -26,6 +26,14 @@ public class Fridge : MonoBehaviour, ILoggable
         }
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     void Start()
     {
         ingredientsPerGroup = startingIngredientsPerGroup;

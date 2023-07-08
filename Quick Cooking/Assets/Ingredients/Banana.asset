@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Banana
   foodGroup: 1
-  sprite: {fileID: 21300000, guid: 50e0347d981414d189ff77217bc6e69c, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: 50e0347d981414d189ff77217bc6e69c, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: b41284a43efeb9c4e9b7a6cae5cbf738, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: eb715b137c7324b4fb291045745499d5, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: da74a2d617db3ea469a858ca0abd079b, type: 3}
