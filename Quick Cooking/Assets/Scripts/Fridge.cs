@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class Fridge : MonoBehaviour, ILoggable
 {
+    [Tooltip("Enable to print debug messages to the console.")]
     [SerializeField] private bool debug = false;
-    [SerializeField] private GameObject fridge;
+    [Tooltip("Defines the amount of ingredients per group that will populate the fridge.")]
     [SerializeField] private int startingIngredientsPerGroup = 3;
 
     private int ingredientsPerGroup = 0;
@@ -22,7 +23,7 @@ public class Fridge : MonoBehaviour, ILoggable
         else
         {
             Instance = this;
-            ingredientIcons = fridge.GetComponentsInChildren<IngredientSlot>();
+            ingredientIcons = GetComponentsInChildren<IngredientSlot>();
         }
     }
 

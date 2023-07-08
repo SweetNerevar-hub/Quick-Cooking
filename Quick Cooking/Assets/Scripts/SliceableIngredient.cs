@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SliceableIngredient : MonoBehaviour
+public class SliceableIngredient : MonoBehaviour, ILoggable
 {
+    [Tooltip("Enable to print debug messages to the console.")]
+    [SerializeField] private bool debug = false;
+
     private SpriteRenderer[] sliceRenderers;
 
     private void Awake()
@@ -38,11 +39,31 @@ public class SliceableIngredient : MonoBehaviour
         {
             if (sliceRenderers[i].gameObject.activeSelf == true)
             {
-                Debug.Log("INGREDIENT SLICED");
+                Log("INGREDIENT SLICED");
                 sliceRenderers[i].gameObject.SetActive(false);
                 return i == sliceRenderers.Length - 1;
             }
         }
         return false;
+    }
+
+    public void Log(string message, int level = 0)
+    {
+        if (debug == true)
+        {
+            switch (level)
+            {
+                default:
+                case 0:
+                    Debug.Log($"[SLICEABLE INGREDIENT] {message}");
+                    break;
+                case 1:
+                    Debug.LogWarning($"[SLICEABLE INGREDIENT] {message}");
+                    break;
+                case 2:
+                    Debug.LogError($"[SLICEABLE INGREDIENT] {message}");
+                    break;
+            }
+        }
     }
 }

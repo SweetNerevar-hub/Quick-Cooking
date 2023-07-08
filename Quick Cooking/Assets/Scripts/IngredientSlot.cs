@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class IngredientSlot : MonoBehaviour
 {
+    [Tooltip("Set to true if this ingredient slot is associated with the inventory bar.")]
     [SerializeField] private bool isInventoryIcon = false;
 
     private Image image;

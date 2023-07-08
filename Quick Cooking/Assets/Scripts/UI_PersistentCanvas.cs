@@ -3,9 +3,14 @@ using UnityEngine.SceneManagement;
 
 public class UI_PersistentCanvas : MonoBehaviour
 {
+    [Tooltip("References to the ingredient slots associated with the scene-persistent canvas.")]
     [SerializeField] private IngredientSlot[] inventorySlots;
+    [Tooltip("Reference to the 'Content' object for the inventory scroll view.")]
     [SerializeField] private RectTransform scrollViewContent;
+    [Tooltip("Reference to the confirm ingredients button game object.")]
     [SerializeField] private GameObject confirmIngredientsButton;
+
+    public int CurrentItemCount { get; private set; } = 0;
 
     public static UI_PersistentCanvas Instance { get; private set; }
 
@@ -67,6 +72,7 @@ public class UI_PersistentCanvas : MonoBehaviour
                 invCount++;
             }
         }
+        CurrentItemCount = invCount;
         if (invCount >= 3)
         {
             confirmIngredientsButton.SetActive(true);
@@ -81,5 +87,12 @@ public class UI_PersistentCanvas : MonoBehaviour
     {
         confirmIngredientsButton.SetActive(false);
         SceneManager.LoadScene(2);
+    }
+
+    public void FinishSlicingIngredients()
+    {
+        scrollViewContent.transform.parent.parent.gameObject.SetActive(false);
+        SceneManager.LoadScene(3);
+        gameObject.SetActive(false);
     }
 }
