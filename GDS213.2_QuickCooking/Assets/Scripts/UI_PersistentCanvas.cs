@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI_PersistentCanvas : MonoBehaviour
 {
     [SerializeField] private IngredientSlot[] inventorySlots;
     [SerializeField] private RectTransform scrollViewContent;
+    [SerializeField] private GameObject confirmIngredientsButton;
 
     public static UI_PersistentCanvas Instance { get; private set; }
 
@@ -30,35 +30,56 @@ public class UI_PersistentCanvas : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         foreach (IngredientSlot slot in inventorySlots)
         {
             slot.UpdateIcon(null);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        confirmIngredientsButton.SetActive(false);
     }
 
     public bool AddIngredientToInventory(Ingredient ingredient)
     {
-        foreach(IngredientSlot slot in inventorySlots)
+        foreach (IngredientSlot slot in inventorySlots)
         {
-            if(slot.gameObject.activeSelf == false)
+            if (slot.gameObject.activeSelf == false)
             {
                 slot.UpdateIcon(ingredient);
+                UpdateIngredientConfirmationButtonStatus();
                 return true;
             }
-            else if(slot.CurrentIngredient == ingredient)
+            else if (slot.CurrentIngredient == ingredient)
             {
                 return false;
             }
         }
         return false;
+    }
+
+    public void UpdateIngredientConfirmationButtonStatus()
+    {
+        int invCount = 0;
+        for(int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].gameObject.activeSelf == true)
+            {
+                invCount++;
+            }
+        }
+        if (invCount >= 3)
+        {
+            confirmIngredientsButton.SetActive(true);
+        }
+        else
+        {
+            confirmIngredientsButton.SetActive(false);
+        }
+    }
+
+    public void ConfirmIngredientSelection()
+    {
+        confirmIngredientsButton.SetActive(false);
+        SceneManager.LoadScene(2);
     }
 }

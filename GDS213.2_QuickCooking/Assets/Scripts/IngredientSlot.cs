@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class IngredientSlot : MonoBehaviour
@@ -41,11 +40,19 @@ public class IngredientSlot : MonoBehaviour
                 UpdateIcon(null);
             }
         }
-        else if(CurrentIngredient != null)
+        else if (CurrentIngredient != null)
         {
-            if (Fridge.Instance.PutIngredientBack(CurrentIngredient) == true)
+            switch (SceneManager.GetActiveScene().buildIndex)
             {
-                UpdateIcon(null);
+                case 1: //fridge scene
+                    if (Fridge.Instance.PutIngredientBack(CurrentIngredient) == true)
+                    {
+                        UpdateIcon(null);
+                        UI_PersistentCanvas.Instance.UpdateIngredientConfirmationButtonStatus();
+                    }
+                    break;
+                case 2: //preparation scene
+                    break;
             }
         }
     }
