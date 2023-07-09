@@ -27,6 +27,7 @@ public class CuttingBoard : MonoBehaviour, ILoggable
         {
             Instance = this;
             sliceableObject.gameObject.SetActive(false);
+            IngredientSlot.OnIngredientSelected += OnIngredientSelected;
         }
     }
 
@@ -73,9 +74,10 @@ public class CuttingBoard : MonoBehaviour, ILoggable
                         //ingredient fully sliced
                         Log("FINISHED SLICING INGREDIENT");
                         sliceableObject.gameObject.SetActive(false);
-                        if(preparedIngredients.Count == UI_PersistentCanvas.Instance.CurrentItemCount)
+                        if(preparedIngredients.Count == GameState.Ingredients.Count)
                         {
                             //load next level
+                            IngredientSlot.OnIngredientSelected -= OnIngredientSelected;
                             UI_PersistentCanvas.Instance.FinishSlicingIngredients();
                         }
                     }
@@ -91,6 +93,11 @@ public class CuttingBoard : MonoBehaviour, ILoggable
                 sliceTimer = -1;
             }
         }
+    }
+
+    public bool OnIngredientSelected(IngredientSlot ingredientSlot)
+    {
+        return PutIngredientOnBoard(ingredientSlot.CurrentIngredient);
     }
 
     public void Log(string message, int level = 0)

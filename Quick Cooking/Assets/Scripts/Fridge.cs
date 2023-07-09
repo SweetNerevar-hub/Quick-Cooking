@@ -10,7 +10,7 @@ public class Fridge : MonoBehaviour, ILoggable
 
     private int ingredientsPerGroup = 0;
     private List<Ingredient> currentIngredients;
-    private IngredientSlot[] ingredientIcons;
+    private List<IngredientSlot> fridgeIngredientSlots;
 
     public static Fridge Instance { get; private set; }
 
@@ -23,7 +23,8 @@ public class Fridge : MonoBehaviour, ILoggable
         else
         {
             Instance = this;
-            ingredientIcons = GetComponentsInChildren<IngredientSlot>();
+            fridgeIngredientSlots = new List<IngredientSlot>(GetComponentsInChildren<IngredientSlot>());
+            IngredientSlot.OnIngredientSelected += OnIngredientSelected;
         }
     }
 
@@ -32,13 +33,14 @@ public class Fridge : MonoBehaviour, ILoggable
         if (Instance == this)
         {
             Instance = null;
+            IngredientSlot.OnIngredientSelected -= OnIngredientSelected;
         }
     }
 
     void Start()
     {
         ingredientsPerGroup = startingIngredientsPerGroup;
-        foreach (IngredientSlot icon in ingredientIcons)
+        foreach (IngredientSlot icon in fridgeIngredientSlots)
         {
             icon.UpdateIcon(null);
         }
@@ -49,11 +51,11 @@ public class Fridge : MonoBehaviour, ILoggable
     {
         Log($"Populating the fridge with random ingredients.");
         currentIngredients = new List<Ingredient>();
-        foreach(KeyValuePair<FoodGroupType, bool> group in GameManager.Instance.UnlockedFoodGroups)
+        foreach(KeyValuePair<FoodGroupType, bool> group in GameState.UnlockedFoodGroups)
         {
             if (group.Value == true)
             {
-                List<Ingredient> randomIngredients = GameManager.Instance.GetRandomIngredients(GameManager.Instance.GetFoodGroupIngredients(GameManager.Instance.UnlockedIngredients, group.Key), ingredientsPerGroup);
+                List<Ingredient> randomIngredients = GameManager.Instance.GetRandomIngredients(GameManager.Instance.GetFoodGroupIngredients(GameState.UnlockedIngredients, group.Key), ingredientsPerGroup);
                 if (randomIngredients != null)
                 {
                     currentIngredients.AddRange(randomIngredients);
@@ -66,16 +68,16 @@ public class Fridge : MonoBehaviour, ILoggable
 
     private void UpdateFridgeIngredientIcons()
     {
-        for (int i = 0; i < ingredientIcons.Length; i++)
+        for (int i = 0; i < fridgeIngredientSlots.Count; i++)
         {
             if (i < currentIngredients.Count)
             {
-                int r = Random.Range(0, ingredientIcons.Length);
-                while (ingredientIcons[r].gameObject.activeSelf == true)
+                int r = Random.Range(0, fridgeIngredientSlots.Count);
+                while (fridgeIngredientSlots[r].gameObject.activeSelf == true)
                 {
-                    r = Random.Range(0, ingredientIcons.Length);
+                    r = Random.Range(0, fridgeIngredientSlots.Count);
                 }
-                ingredientIcons[r].UpdateIcon(currentIngredients[i]);
+                fridgeIngredientSlots[r].UpdateIcon(currentIngredients[i]);
                 Log($"Updated fridge ingredient at index {r} to {currentIngredients[i].ID}.");
             }
             else
@@ -87,12 +89,26 @@ public class Fridge : MonoBehaviour, ILoggable
 
     public bool PutIngredientBack(Ingredient ingredient)
     {
-        int random = Random.Range(0, ingredientIcons.Length);
-        while (ingredientIcons[random].CurrentIngredient != null)
+        int random = Random.Range(0, fridgeIngredientSlots.Count);
+        while (fridgeIngredientSlots[random].CurrentIngredient != null)
         {
-            random = Random.Range(0, ingredientIcons.Length);
+            random = Random.Range(0, fridgeIngredientSlots.Count);
         }
-        ingredientIcons[random].UpdateIcon(ingredient);
+        fridgeIngredientSlots[random].UpdateIcon(ingredient);
+        GameState.Ingredients.Remove(ingredient);
+        Log($"Put {ingredient.ID} back in the fridge.");
+        return true;
+    }
+
+    public bool OnIngredientSelected(IngredientSlot ingredientSlot)
+    {
+        if (ingredientSlot.IsInventoryIcon == true)
+        {
+            if (ingredientSlot.CurrentIngredient != null)
+            {
+                return PutIngredientBack(ingredientSlot.CurrentIngredient);
+            }
+        }
         return true;
     }
 

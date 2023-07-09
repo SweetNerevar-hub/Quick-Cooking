@@ -4,12 +4,17 @@ using UnityEngine.UI;
 
 public class IngredientSlot : MonoBehaviour
 {
+    public delegate bool IngredientSlotDelegate(IngredientSlot ingredient);
+
     [Tooltip("Set to true if this ingredient slot is associated with the inventory bar.")]
     [SerializeField] private bool isInventoryIcon = false;
 
     private Image image;
 
+    public bool IsInventoryIcon { get { return isInventoryIcon; } }
     public Ingredient CurrentIngredient { get; private set; }
+
+    public static event IngredientSlotDelegate OnIngredientSelected;
 
     private void Awake()
     {
@@ -34,31 +39,9 @@ public class IngredientSlot : MonoBehaviour
 
     public void Select()
     {
-        if (isInventoryIcon == false)
+        if (OnIngredientSelected?.Invoke(this) == true)
         {
-            if (UI_PersistentCanvas.Instance.AddIngredientToInventory(CurrentIngredient) == true)
-            {
-                UpdateIcon(null);
-            }
-        }
-        else if (CurrentIngredient != null)
-        {
-            switch (SceneManager.GetActiveScene().buildIndex)
-            {
-                case 1: //fridge scene
-                    if (Fridge.Instance.PutIngredientBack(CurrentIngredient) == true)
-                    {
-                        UpdateIcon(null);
-                        UI_PersistentCanvas.Instance.UpdateIngredientConfirmationButtonStatus();
-                    }
-                    break;
-                case 2: //preparation scene
-                    if (CuttingBoard.Instance.PutIngredientOnBoard(CurrentIngredient) == true)
-                    {
-                        UpdateIcon(null);
-                    }
-                    break;
-            }
+            UpdateIcon(null);
         }
     }
 }

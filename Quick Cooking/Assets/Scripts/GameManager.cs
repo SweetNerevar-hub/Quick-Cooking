@@ -13,17 +13,6 @@ public class GameManager : MonoBehaviour, ILoggable
     [Tooltip("Enable to unlock this food group when the game starts.")]
     [SerializeField] private bool dairyUnlocked = false, fruitUnlocked = false, grainUnlocked = false, proteinUnlocked = false, vegetableUnlocked = true;
 
-
-    public readonly Dictionary<FoodGroupType, bool> UnlockedFoodGroups = new Dictionary<FoodGroupType, bool>
-    {
-        { FoodGroupType.dairy, false},
-        { FoodGroupType.fruit, false},
-        { FoodGroupType.grain, false},
-        { FoodGroupType.protein, false},
-        { FoodGroupType.vegetable, true}
-    };
-    public readonly List<Ingredient> UnlockedIngredients = new List<Ingredient>();
-
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -36,18 +25,20 @@ public class GameManager : MonoBehaviour, ILoggable
         {
             Instance = this;
             DontDestroyOnLoad(this);
+            //Unlock food groups
+            GameState.UnlockedFoodGroups[FoodGroupType.dairy] = dairyUnlocked;
+            GameState.UnlockedFoodGroups[FoodGroupType.fruit] = fruitUnlocked;
+            GameState.UnlockedFoodGroups[FoodGroupType.grain] = grainUnlocked;
+            GameState.UnlockedFoodGroups[FoodGroupType.protein] = proteinUnlocked;
+            GameState.UnlockedFoodGroups[FoodGroupType.vegetable] = vegetableUnlocked;
+            //unlock random ingredients for each group
+            defaultIngredientsPerGroup = defaultIngredientsPerGroup <= 0 ? 1 : defaultIngredientsPerGroup; //make sure default ingredients is at least 1
+            Log($"Unlocked random ingredients in {FoodGroupType.dairy.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.dairy, defaultIngredientsPerGroup).ToString().ToUpper()}");
+            Log($"Unlocked random ingredients in {FoodGroupType.fruit.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.fruit, defaultIngredientsPerGroup).ToString().ToUpper()}");
+            Log($"Unlocked random ingredients in {FoodGroupType.grain.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.grain, defaultIngredientsPerGroup).ToString().ToUpper()}");
+            Log($"Unlocked random ingredients in {FoodGroupType.protein.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.protein, defaultIngredientsPerGroup).ToString().ToUpper()}");
+            Log($"Unlocked random ingredients in {FoodGroupType.vegetable.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.vegetable, defaultIngredientsPerGroup).ToString().ToUpper()}");
         }
-        UnlockedFoodGroups[FoodGroupType.dairy] = dairyUnlocked;
-        UnlockedFoodGroups[FoodGroupType.fruit] = fruitUnlocked;
-        UnlockedFoodGroups[FoodGroupType.grain] = grainUnlocked;
-        UnlockedFoodGroups[FoodGroupType.protein] = proteinUnlocked;
-        UnlockedFoodGroups[FoodGroupType.vegetable] = vegetableUnlocked;
-        defaultIngredientsPerGroup = defaultIngredientsPerGroup <= 0 ? 1 : defaultIngredientsPerGroup;
-        Log($"Unlocked random ingredients in {FoodGroupType.dairy.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.dairy, defaultIngredientsPerGroup).ToString().ToUpper()}");
-        Log($"Unlocked random ingredients in {FoodGroupType.fruit.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.fruit, defaultIngredientsPerGroup).ToString().ToUpper()}");
-        Log($"Unlocked random ingredients in {FoodGroupType.grain.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.grain, defaultIngredientsPerGroup).ToString().ToUpper()}");
-        Log($"Unlocked random ingredients in {FoodGroupType.protein.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.protein, defaultIngredientsPerGroup).ToString().ToUpper()}");
-        Log($"Unlocked random ingredients in {FoodGroupType.vegetable.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.vegetable, defaultIngredientsPerGroup).ToString().ToUpper()}");
     }
 
     private void OnDestroy()
@@ -56,10 +47,6 @@ public class GameManager : MonoBehaviour, ILoggable
         {
             Instance = null;
         }
-    }
-
-    private void Start()
-    {
     }
 
     /// <summary>
@@ -102,13 +89,11 @@ public class GameManager : MonoBehaviour, ILoggable
     }
 
     /// <summary>
-    /// Adds 
+    /// Unlocks the given amount of randomly selected ingredients from the specified food group.
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public bool UnlockRandomIngredientInGroup(FoodGroupType type, int amount = 1)
+    private bool UnlockRandomIngredientInGroup(FoodGroupType type, int amount = 1)
     {
-        if (UnlockedFoodGroups[type] == true)
+        if (GameState.UnlockedFoodGroups[type] == true)
         {
             Log($"Getting all ingredients for food group: {type.ToString().ToUpper()}");
             List<Ingredient> groupIngredients = GetFoodGroupIngredients(ingredientDatabase, type);
@@ -118,7 +103,7 @@ public class GameManager : MonoBehaviour, ILoggable
                 return false;
             }
             Log($"Getting unlocked ingredients for food group: {type.ToString().ToUpper()}");
-            List<Ingredient> unlockedGroupIngredients = GetFoodGroupIngredients(UnlockedIngredients, type);
+            List<Ingredient> unlockedGroupIngredients = GetFoodGroupIngredients(GameState.UnlockedIngredients, type);
             if (unlockedGroupIngredients != null && groupIngredients.Count == unlockedGroupIngredients.Count)
             {
                 Log($"All ingredients in group {type.ToString().ToUpper()} have been unlocked!", 1);
@@ -144,14 +129,14 @@ public class GameManager : MonoBehaviour, ILoggable
                         random = Random.Range(0, groupIngredients.Count);
                     }
                 }
-                UnlockedIngredients.Add(groupIngredients[random]);
+                GameState.UnlockedIngredients.Add(groupIngredients[random]);
                 unlockedGroupIngredients.Add(groupIngredients[random]);
                 Log($"Unlocked group {type.ToString().ToUpper()} ingredient: {groupIngredients[random].name.ToString().ToUpper()}");
                 index++;
             }
             return true;
         }
-        Log($"Cannot unlock new food in group {type.ToString().ToUpper()} - food group has not been unlocked!", 1);
+        Log($"Cannot unlock new foods in group {type.ToString().ToUpper()} - food group has not been unlocked!", 1);
         return false;
     }
 
@@ -179,4 +164,18 @@ public class GameManager : MonoBehaviour, ILoggable
 public interface ILoggable
 {
     void Log(string message, int level = 0);
+}
+
+public static class GameState
+{
+    public static List<Ingredient> Ingredients { get; private set; } = new List<Ingredient>();
+    public static readonly Dictionary<FoodGroupType, bool> UnlockedFoodGroups = new Dictionary<FoodGroupType, bool>
+    {
+        { FoodGroupType.dairy, false},
+        { FoodGroupType.fruit, false},
+        { FoodGroupType.grain, false},
+        { FoodGroupType.protein, false},
+        { FoodGroupType.vegetable, true}
+    };
+    public static readonly List<Ingredient> UnlockedIngredients = new List<Ingredient>();
 }
