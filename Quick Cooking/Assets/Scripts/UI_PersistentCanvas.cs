@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class UI_PersistentCanvas : MonoBehaviour
@@ -7,10 +9,11 @@ public class UI_PersistentCanvas : MonoBehaviour
     [SerializeField] private bool debug = false;
     [Tooltip("References to the ingredient slots associated with the scene-persistent canvas.")]
     [SerializeField] private IngredientSlot[] inventorySlots;
-    [Tooltip("Reference to the 'Content' object for the inventory scroll view.")]
-    [SerializeField] private RectTransform scrollViewContent;
+    [Tooltip("Reference to the inventory scroll view.")]
+    [SerializeField] private RectTransform inventoryScrollView;
     [Tooltip("Reference to the confirm ingredients button game object.")]
     [SerializeField] private GameObject confirmIngredientsButton;
+    [SerializeField] private Image progressFillImage;
 
     public static UI_PersistentCanvas Instance { get; private set; }
 
@@ -43,6 +46,7 @@ public class UI_PersistentCanvas : MonoBehaviour
             slot.UpdateIcon(null);
         }
         confirmIngredientsButton.SetActive(false);
+        progressFillImage.fillAmount = GameState.Experience / GameState.NextUnlockTarget;
     }
 
     public bool AddIngredientToInventory(Ingredient ingredient)
@@ -90,9 +94,48 @@ public class UI_PersistentCanvas : MonoBehaviour
 
     public void FinishSlicingIngredients()
     {
-        scrollViewContent.transform.parent.parent.gameObject.SetActive(false);
+        inventoryScrollView.gameObject.SetActive(false);
         SceneManager.LoadScene(3);
-        gameObject.SetActive(false);
+    }
+
+    public void FinishCookingPieces(List<IngredientPiece> pieces)
+    {
+        foreach(IngredientPiece piece in pieces)
+        {
+            piece.transform.SetParent(null);
+            piece.Cooked = true;
+            DontDestroyOnLoad(piece);
+        }
+        foreach (IngredientPiece piece in pieces)
+        {
+            GameState.IngredientPieces.Add(piece);
+        }
+        SceneManager.LoadScene(4);
+    }
+
+    public void FinishedMeal()
+    {
+        Destroy(GameManager.Instance.gameObject);
+        Destroy(gameObject);
+        GameState.Ingredients.Clear();
+        GameState.Experience += 100;
+        if(GameState.Experience >= GameState.NextUnlockTarget)
+        {
+            GameState.Experience -= GameState.NextUnlockTarget;
+            GameState.NextUnlockTarget = Mathf.Abs(GameState.NextUnlockTarget * 1.1f);
+            foreach (KeyValuePair<FoodGroupType, bool> pair in GameState.UnlockedFoodGroups)
+            {
+                Debug.Log(pair.Key + " - " + pair.Value);
+                if (GameState.UnlockedFoodGroups[pair.Key] == false)
+                {
+                    GameState.UnlockedFoodGroups[pair.Key] = true;
+                    Debug.Log(pair.Key + " unlocked");
+                    break;
+                }
+            }
+        }
+        progressFillImage.fillAmount = GameState.Experience / GameState.NextUnlockTarget;
+        SceneManager.LoadScene(1);
     }
 
     public bool OnIngredientSelected(IngredientSlot ingredientSlot)

@@ -64,21 +64,20 @@ public class CuttingBoard : MonoBehaviour, ILoggable
             {
                 sliceTimer = -1;
                 sliceEnd = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                Debug.DrawLine(sliceStart, sliceEnd, Color.red, 3);
-                //raycast here
-                RaycastHit2D hit = Physics2D.Raycast(sliceStart, sliceEnd - sliceStart);
-                if (hit.collider != null && hit.collider.gameObject == sliceableObject.gameObject)
+                if (sliceEnd != sliceStart)
                 {
-                    if(sliceableObject.Slice() == true)
+                    RaycastHit2D hit = Physics2D.Raycast(sliceStart, sliceEnd - sliceStart);
+                    if (hit.collider != null && hit.collider.gameObject == sliceableObject.gameObject)
                     {
-                        //ingredient fully sliced
-                        Log("FINISHED SLICING INGREDIENT");
-                        sliceableObject.gameObject.SetActive(false);
-                        if(preparedIngredients.Count == GameState.Ingredients.Count)
+                        if (sliceableObject.Slice() == true)
                         {
-                            //load next level
-                            IngredientSlot.OnIngredientSelected -= OnIngredientSelected;
-                            UI_PersistentCanvas.Instance.FinishSlicingIngredients();
+                            Log("FINISHED SLICING INGREDIENT");
+                            sliceableObject.gameObject.SetActive(false);
+                            if (preparedIngredients.Count == GameState.Ingredients.Count)
+                            {
+                                IngredientSlot.OnIngredientSelected -= OnIngredientSelected;
+                                UI_PersistentCanvas.Instance.FinishSlicingIngredients();
+                            }
                         }
                     }
                 }

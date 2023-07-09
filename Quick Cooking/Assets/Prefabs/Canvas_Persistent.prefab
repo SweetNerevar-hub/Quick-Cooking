@@ -115,7 +115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.0005115575, y: -0.000061035156}
+  m_AnchoredPosition: {x: -0.011756473, y: -0.000061035156}
   m_SizeDelta: {x: 615, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &98624697
@@ -544,7 +544,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 818439956}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1639,8 +1639,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 44381939}
   m_HandleRect: {fileID: 44381938}
   m_Direction: 0
-  m_Value: 0.000008044462
-  m_Size: 0.8889674
+  m_Value: 0.00043319268
+  m_Size: 0.9558984
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2039,14 +2039,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa6b5a394f8e8f488da88a205a69bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   inventorySlots:
   - {fileID: 1424397639}
   - {fileID: 1132474375}
   - {fileID: 1246190241}
   - {fileID: 769743061}
   - {fileID: 101858414}
-  scrollViewContent: {fileID: 98624696}
+  inventoryScrollView: {fileID: 1861570728}
   confirmIngredientsButton: {fileID: 453659241}
+  progressFillImage: {fileID: 4489468332044692081}
 --- !u!1 &4489468331603772533
 GameObject:
   m_ObjectHideFlags: 0

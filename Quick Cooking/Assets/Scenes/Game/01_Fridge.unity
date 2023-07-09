@@ -3040,11 +3040,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa09c8618e55ca04a9d2a0d4a27d3774, type: 2}
   - {fileID: 11400000, guid: abc5c0247b8db314bbe716b1e3dfff7a, type: 2}
   - {fileID: 11400000, guid: f596341fb6d1e0b49ae7925dc582ee79, type: 2}
-  defaultIngredientsPerGroup: 3
-  dairyUnlocked: 1
-  fruitUnlocked: 1
-  grainUnlocked: 1
-  proteinUnlocked: 1
+  unlockedIngredientsPerGroup: 3
+  dairyUnlocked: 0
+  fruitUnlocked: 0
+  grainUnlocked: 0
+  proteinUnlocked: 0
   vegetableUnlocked: 1
 --- !u!1 &1186984554
 GameObject:
@@ -3613,8 +3613,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 557aa9b68b20a754da7f7208790f1aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 1
-  startingIngredientsPerGroup: 2
+  debug: 0
+  startingIngredientsPerGroup: 3
 --- !u!114 &1434407469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4702,6 +4702,10 @@ PrefabInstance:
     - target: {fileID: 44381938, guid: 6833aaf7e007cff448dd6851c0be06b8, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 98624696, guid: 6833aaf7e007cff448dd6851c0be06b8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.26642072
       objectReference: {fileID: 0}
     - target: {fileID: 101858413, guid: 6833aaf7e007cff448dd6851c0be06b8, type: 3}
       propertyPath: m_AnchorMax.y

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IngredientPiece : MonoBehaviour
 {
+    public delegate void IngredientPieceCookedDelegate();
+
     [Tooltip("The time the ingredient takes to brown.")]
     [SerializeField] private float cookingTime;
     [Tooltip("The colour of the ingredient slice when completely brown.")]
@@ -15,10 +17,14 @@ public class IngredientPiece : MonoBehaviour
     private Color startColor;
     private Color targetColor;
 
+    public bool Cooked { get; set; } = false;
+
+    public static event IngredientPieceCookedDelegate OnPieceCooked;
+
     private void Awake()
     {
         TryGetComponent(out spriteRenderer);
-        ChangeColour(targetColor);
+        ChangeColour(brownColor);
     }
 
     private void Start()
@@ -28,19 +34,23 @@ public class IngredientPiece : MonoBehaviour
 
     void Update()
     {
-        if (cookingTimer >= 0)
+        if (Cooked == false)
         {
-            cookingTimer += Time.deltaTime;
-            spriteRenderer.color = new Color()
+            if (cookingTimer >= 0)
             {
-                r = Mathf.Lerp(startColor.r, targetColor.r, cookingTimer / cookingTime),
-                g = Mathf.Lerp(startColor.g, targetColor.g, cookingTimer / cookingTime),
-                b = Mathf.Lerp(startColor.b, targetColor.b, cookingTimer / cookingTime),
-                a = Mathf.Lerp(startColor.a, targetColor.a, cookingTimer / cookingTime)
-            };
-            if (cookingTimer >= targetTime)
-            {
-                cookingTimer = -1;
+                cookingTimer += Time.deltaTime;
+                spriteRenderer.color = new Color()
+                {
+                    r = Mathf.Lerp(startColor.r, targetColor.r, cookingTimer / cookingTime),
+                    g = Mathf.Lerp(startColor.g, targetColor.g, cookingTimer / cookingTime),
+                    b = Mathf.Lerp(startColor.b, targetColor.b, cookingTimer / cookingTime),
+                    a = Mathf.Lerp(startColor.a, targetColor.a, cookingTimer / cookingTime)
+                };
+                if (cookingTimer >= targetTime)
+                {
+                    cookingTimer = -1;
+                    OnPieceCooked?.Invoke();
+                }
             }
         }
     }
@@ -59,5 +69,14 @@ public class IngredientPiece : MonoBehaviour
         }
         startColor = spriteRenderer.color;
         targetColor = colorTarget;
+    }
+
+    public void Eat()
+    {
+        if (Cooked == true)
+        {
+            GameState.IngredientPieces.Remove(this);
+            Destroy(gameObject);
+        }
     }
 }

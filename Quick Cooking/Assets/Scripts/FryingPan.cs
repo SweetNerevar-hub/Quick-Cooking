@@ -10,10 +10,12 @@ public class FryingPan : MonoBehaviour
     [SerializeField] private float stirForce = 2;
 
     private List<IngredientPiece> pieces = new List<IngredientPiece>();
+    private int cookedPieces = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        IngredientPiece.OnPieceCooked += OnPieceCooked;
         foreach (Ingredient ingredient in GameState.Ingredients)
         {
             SpawnPieces(ingredient);
@@ -31,6 +33,16 @@ public class FryingPan : MonoBehaviour
             {
                 rb.AddForce((Vector2)hit.transform.position - touchPos * stirForce, ForceMode2D.Impulse);
             }
+        }
+    }
+
+    private void OnPieceCooked()
+    {
+        cookedPieces++;
+        if(cookedPieces == pieces.Count)
+        {
+            IngredientPiece.OnPieceCooked -= OnPieceCooked;
+            UI_PersistentCanvas.Instance.FinishCookingPieces(pieces);
         }
     }
 

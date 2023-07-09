@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2101837555324952484}
   - component: {fileID: 6842503657137693508}
   m_Layer: 0
-  m_Name: ChoppedIngredientPiece
+  m_Name: ChoppedIngredientPiece 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,5 +146,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a816541d054f75548ab80624a7b2b896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookingTime: 10
-  brownColor: {r: 0.49056602, g: 0.2705762, b: 0.06247775, a: 1}
+  cookingTime: 3
+  brownColor: {r: 0.33112752, g: 0.46226418, b: 0.05015131, a: 1}
