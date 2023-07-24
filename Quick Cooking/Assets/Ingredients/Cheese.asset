@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Cheese
   foodGroup: 0
-  fridgeSprite: {fileID: 21300000, guid: 3ba5a88a0508a488a85c30169a8e18de, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: 3ba5a88a0508a488a85c30169a8e18de, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: 3ba5a88a0508a488a85c30169a8e18de, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: 3ba5a88a0508a488a85c30169a8e18de, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: b17ea5d850ad4394d8fedcc324430b42, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 5f8de1aa5ce050e4ea2afcd790bc7939, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 7febff7cb541a2041bdd2a22cf8bdd04, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: 2d21a19bd27bbb44ebcc9f7a18f294eb, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 1739ebcc99f5cef4490e1e5aeb297ac7, type: 3}

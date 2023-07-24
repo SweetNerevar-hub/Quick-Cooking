@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Potato
   foodGroup: 4
-  fridgeSprite: {fileID: 21300000, guid: 44994881295ab4b1084896d685432eff, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: 44994881295ab4b1084896d685432eff, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: 44994881295ab4b1084896d685432eff, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: 44994881295ab4b1084896d685432eff, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: b92cfa02e0f73c0418ded22ad54fa41a, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 14aea9838f6e912429d35202cb520e57, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: aebf17c97b1d3c44ba3fb7572ded1608, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: a4cc3316a93806447b7fa0e3074df992, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 5df7b2f6646844d4c854643a75d0f7a4, type: 3}

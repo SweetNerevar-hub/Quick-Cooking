@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Beans
   foodGroup: 3
-  fridgeSprite: {fileID: 21300000, guid: dc035cb5f75664291ad6fee01bf08790, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: dc035cb5f75664291ad6fee01bf08790, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: dc035cb5f75664291ad6fee01bf08790, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: dc035cb5f75664291ad6fee01bf08790, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: 4dc41e0375376574e8cfe1beece76079, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 172b836150dcf4949b2376cb2d5282d8, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 172b836150dcf4949b2376cb2d5282d8, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: 172b836150dcf4949b2376cb2d5282d8, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 5df7b2f6646844d4c854643a75d0f7a4, type: 3}

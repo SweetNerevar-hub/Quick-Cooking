@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Lettuce
   foodGroup: 4
-  fridgeSprite: {fileID: 21300000, guid: 3e87be51823d846949ed08c33c74b463, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: 3e87be51823d846949ed08c33c74b463, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: 3e87be51823d846949ed08c33c74b463, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: 3e87be51823d846949ed08c33c74b463, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: 22b633b52711cac419bee4e73247d313, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 8b3050fb86e5fe048b68b9e880b40ddb, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 24b115a2eacf68946856b85a10eab910, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: 356379fe27276c54d8e06996c150c9c0, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 6e9589b55a5fd814db1ea825b9711f58, type: 3}

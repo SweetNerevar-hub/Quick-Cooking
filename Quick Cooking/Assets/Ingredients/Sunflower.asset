@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Sunflower Seeds
   foodGroup: 2
-  fridgeSprite: {fileID: 21300000, guid: 475d1ac95f51a4b41969b1c49e47b1f6, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: 475d1ac95f51a4b41969b1c49e47b1f6, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: 475d1ac95f51a4b41969b1c49e47b1f6, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: 475d1ac95f51a4b41969b1c49e47b1f6, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: e3d2d1fc5ad6b9b429dc5aeee827e399, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 85329c4c48ff49f47b6cf9821fe1bb0a, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 3580319854c989c408e2aee963035452, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: 1196c8b4f532183478ac0c791527567b, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 1739ebcc99f5cef4490e1e5aeb297ac7, type: 3}

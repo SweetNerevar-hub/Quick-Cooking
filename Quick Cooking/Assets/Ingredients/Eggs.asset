@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Eggs
   foodGroup: 3
-  fridgeSprite: {fileID: 21300000, guid: db2a00ff894de47e4a7451b104b04eeb, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: db2a00ff894de47e4a7451b104b04eeb, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: db2a00ff894de47e4a7451b104b04eeb, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: db2a00ff894de47e4a7451b104b04eeb, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: b23f7de08ec015946b2bf4f638a6c637, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 165d20355e2ddf54da675b868a8a6fc7, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 165d20355e2ddf54da675b868a8a6fc7, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: 165d20355e2ddf54da675b868a8a6fc7, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 5df7b2f6646844d4c854643a75d0f7a4, type: 3}

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Mushroom
   foodGroup: 4
-  fridgeSprite: {fileID: 21300000, guid: 8f984065dded1464b9b14d7a205f5275, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: 8f984065dded1464b9b14d7a205f5275, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: 8f984065dded1464b9b14d7a205f5275, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: 8f984065dded1464b9b14d7a205f5275, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: fa3e56aadf55bd44b928d42c680366c4, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 4f4b89c7940ccfa488ae0725a4c44fdd, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 43a5e1dc02448484ba40a6efdd1c146a, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: 4d6236b264354b44e81f17768df5cccb, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 1739ebcc99f5cef4490e1e5aeb297ac7, type: 3}

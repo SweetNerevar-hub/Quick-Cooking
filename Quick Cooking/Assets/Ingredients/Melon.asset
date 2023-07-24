@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Melon
   foodGroup: 1
-  fridgeSprite: {fileID: 21300000, guid: 636ed3763815e48fb855165bd6e3bc89, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: 636ed3763815e48fb855165bd6e3bc89, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: 636ed3763815e48fb855165bd6e3bc89, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: 636ed3763815e48fb855165bd6e3bc89, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: eae216c43fb17ac4b9477ce825b98360, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: ab54e3d617fa8ab4f8fa9ab1214c8529, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 084c49d6490df5842b0aff97bd08592e, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: e014efa4ff1ca1a4fbd8e779f236477f, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 5df7b2f6646844d4c854643a75d0f7a4, type: 3}

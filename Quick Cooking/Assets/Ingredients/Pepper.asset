@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Pepper
   foodGroup: 4
-  fridgeSprite: {fileID: 21300000, guid: af9dcf356be2749228f23fff1cc8b7fb, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: af9dcf356be2749228f23fff1cc8b7fb, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: af9dcf356be2749228f23fff1cc8b7fb, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: af9dcf356be2749228f23fff1cc8b7fb, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: b30268bcf40f51f4d80f143fbe84395d, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 3606be1bfbd79d244ad8c90c8355901e, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: c56f94f66f973734089bbd994b2a3fef, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: 27b08270e454ada44ad2712a9bc096a3, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 1739ebcc99f5cef4490e1e5aeb297ac7, type: 3}

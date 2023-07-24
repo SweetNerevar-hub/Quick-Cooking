@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Orange
   foodGroup: 1
-  fridgeSprite: {fileID: 21300000, guid: 6fc31519aded24a839c1af9e163b6c01, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: 6fc31519aded24a839c1af9e163b6c01, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: 6fc31519aded24a839c1af9e163b6c01, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: 6fc31519aded24a839c1af9e163b6c01, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: 8ce32e68f07140149a17cfad95369cb7, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: c289d0f1bf0ce6341a4d45da22054bc6, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 35e2a50be6a37cc408ea8bf08cbecc4b, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: e72420f6d3a643248a3b42416e3527f8, type: 3}
   slicedPrefab: {fileID: 6842503657137693508, guid: 6e9589b55a5fd814db1ea825b9711f58, type: 3}
