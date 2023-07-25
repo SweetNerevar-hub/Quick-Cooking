@@ -15,6 +15,9 @@ public class UI_PersistentCanvas : MonoBehaviour
     [SerializeField] private GameObject confirmIngredientsButton;
     [SerializeField] private Image progressFillImage;
 
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip UIMouseClick;
+
     public static UI_PersistentCanvas Instance { get; private set; }
 
     private void Awake()
@@ -40,6 +43,8 @@ public class UI_PersistentCanvas : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         IngredientSlot.OnIngredientSelected += OnIngredientSelected;
         foreach (IngredientSlot slot in inventorySlots)
         {
@@ -87,6 +92,8 @@ public class UI_PersistentCanvas : MonoBehaviour
 
     public void ConfirmIngredientSelection()
     {
+        audioSource.PlayOneShot(UIMouseClick);
+
         confirmIngredientsButton.SetActive(false);
         IngredientSlot.OnIngredientSelected -= OnIngredientSelected;
         SceneManager.LoadScene(2);
@@ -100,6 +107,8 @@ public class UI_PersistentCanvas : MonoBehaviour
 
     public void FinishCookingPieces(List<IngredientPiece> pieces)
     {
+        GetComponent<AudioSource>().Play();
+
         foreach(IngredientPiece piece in pieces)
         {
             piece.transform.SetParent(null);

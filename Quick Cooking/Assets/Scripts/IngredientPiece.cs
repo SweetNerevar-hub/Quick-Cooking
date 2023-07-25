@@ -75,6 +75,8 @@ public class IngredientPiece : MonoBehaviour
     {
         if (Cooked == true)
         {
+            PersistentAudio.Instance.EatFoodAudio();
+
             GameState.IngredientPieces.Remove(this);
             Destroy(gameObject);
         }

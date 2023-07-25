@@ -115,7 +115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.011756473, y: -0.000061035156}
+  m_AnchoredPosition: {x: -0.0000022649765, y: -0.000061035156}
   m_SizeDelta: {x: 615, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &98624697
@@ -1639,8 +1639,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 44381939}
   m_HandleRect: {fileID: 44381938}
   m_Direction: 0
-  m_Value: 0.00043319268
-  m_Size: 0.9558984
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2049,6 +2049,7 @@ MonoBehaviour:
   inventoryScrollView: {fileID: 1861570728}
   confirmIngredientsButton: {fileID: 453659241}
   progressFillImage: {fileID: 4489468332044692081}
+  eatingFood: {fileID: 0}
 --- !u!1 &4489468331603772533
 GameObject:
   m_ObjectHideFlags: 0
