@@ -18,4 +18,4 @@ MonoBehaviour:
   firstSliceSprite: {fileID: 21300000, guid: 5e8bc6f02fbe5b448a5edd78e1d1f66e, type: 3}
   lastSliceSprite: {fileID: 21300000, guid: 9c7ca3353fd8b65409692342af42c9c7, type: 3}
   middleSlicesSprite: {fileID: 21300000, guid: 89d9956c4be371042b64fd8bd0dc3d07, type: 3}
-  slicedPrefab: {fileID: 6842503657137693508, guid: 1739ebcc99f5cef4490e1e5aeb297ac7, type: 3}
+  slicedPrefab: {fileID: 6842503657137693508, guid: 44f43d6537582fa4f83bc15cc7da0ea2, type: 3}

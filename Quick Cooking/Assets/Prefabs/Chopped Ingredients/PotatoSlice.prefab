@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2101837555324952484}
   - component: {fileID: 6842503657137693508}
   m_Layer: 0
-  m_Name: ChoppedIngredientPiece 6
+  m_Name: PotatoSlice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 3e3ed237b4a0ad94c9c1f8fea05dabf9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 394fcb3521d0cae4b918164dcda51682, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
