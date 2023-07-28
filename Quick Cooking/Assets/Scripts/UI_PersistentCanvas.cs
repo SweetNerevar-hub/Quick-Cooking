@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// This class handles the data and functionality associated with the persistent UI elements.
+/// </summary>
 public class UI_PersistentCanvas : MonoBehaviour
 {
     [Tooltip("Enable to print debug messages to the console.")]
@@ -13,26 +16,36 @@ public class UI_PersistentCanvas : MonoBehaviour
     [SerializeField] private RectTransform inventoryScrollView;
     [Tooltip("Reference to the confirm ingredients button game object.")]
     [SerializeField] private GameObject confirmIngredientsButton;
+    [Tooltip("Reference to the foreground fill image of the progress bar.")]
     [SerializeField] private Image progressFillImage;
 
-    private AudioSource audioSource;
-    [SerializeField] private AudioClip UIMouseClick;
+    private AudioSource audioSource;    //written by Cameron Moore.
+    [SerializeField] private AudioClip UIMouseClick;    //written by Cameron Moore.
 
+    /// <summary>
+    /// The current instance of the persistent UI.
+    /// </summary>
     public static UI_PersistentCanvas Instance { get; private set; }
 
+    /// <summary>
+    /// Executed when the object first loads.
+    /// </summary>
     private void Awake()
     {
-        if(Instance != null)
+        if(Instance != null)    //a persistent UI already exists
         {
-            Destroy(this);
+            Destroy(this);  //destroy this instance of the script
         }
-        else
+        else    //setup singleton
         {
             Instance = this;
             DontDestroyOnLoad(this);
         }
     }
 
+    /// <summary>
+    /// Executes when the object is destroyed.
+    /// </summary>
     private void OnDestroy()
     {
         if(Instance == this)
@@ -41,9 +54,12 @@ public class UI_PersistentCanvas : MonoBehaviour
         }
     }
 
-    void Start()
+    /// <summary>
+    /// Executes on the first frame of the game.
+    /// </summary>
+    private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();  //written by Cameron Moore.
 
         IngredientSlot.OnIngredientSelected += OnIngredientSelected;
         foreach (IngredientSlot slot in inventorySlots)
@@ -54,14 +70,19 @@ public class UI_PersistentCanvas : MonoBehaviour
         progressFillImage.fillAmount = GameState.Experience / GameState.NextUnlockTarget;
     }
 
-    public bool AddIngredientToInventory(Ingredient ingredient)
+    /// <summary>
+    /// Adds the passed ingredient to the inventory.
+    /// </summary>
+    /// <param name="ingredient">The ingredient to add to the inventory.</param>
+    /// <returns>Returns true if the passed ingredient was successfully added to the inventory.</returns>
+    private bool AddIngredientToInventory(Ingredient ingredient)
     {
         foreach (IngredientSlot slot in inventorySlots)
         {
             if (slot.gameObject.activeSelf == false)
             {
                 slot.UpdateIcon(ingredient);
-                GameState.Ingredients.Add(ingredient);
+                GameState.CurrentIngredients.Add(ingredient);
                 UpdateIngredientConfirmationButtonStatus();
                 Log($"Added {ingredient.ID} to the inventory.");
                 return true;
@@ -76,35 +97,96 @@ public class UI_PersistentCanvas : MonoBehaviour
         return false;
     }
 
-    public void UpdateIngredientConfirmationButtonStatus()
+    /// <summary>
+    /// Enables the confirmation button if the current ingredients is greater than or equal to three.
+    /// Else disables the confirmation button.
+    /// </summary>
+    private void UpdateIngredientConfirmationButtonStatus()
     {
-        if (GameState.Ingredients.Count >= 3)
+        if (GameState.CurrentIngredients.Count >= 3)
         {
             confirmIngredientsButton.SetActive(true);
-            Log($"Inventory confirmation button enabled ({GameState.Ingredients.Count} ingredients).");
+            Log($"Inventory confirmation button enabled ({GameState.CurrentIngredients.Count} ingredients).");
         }
         else
         {
             confirmIngredientsButton.SetActive(false);
-            Log($"Inventory confirmation button disabled ({GameState.Ingredients.Count} ingredients).");
+            Log($"Inventory confirmation button disabled ({GameState.CurrentIngredients.Count} ingredients).");
         }
     }
 
+    /// <summary>
+    /// Event subscription response to UI ingredient slot selection.
+    /// </summary>
+    /// <param name="ingredientSlot">The selected ingredient slot.</param>
+    /// <returns>Returns false if there is no ingredient associated with the passed slot, 
+    /// or if the ingredient could not be added to the inventory (if the ingredient slot is not an inventory icon).</returns>
+    private bool OnIngredientSelected(IngredientSlot ingredientSlot)
+    {
+        if (ingredientSlot.CurrentIngredient != null)
+        {
+            if (ingredientSlot.IsInventoryIcon == false)    //ingredient slot is not an inventory icon
+            {
+                return AddIngredientToInventory(ingredientSlot.CurrentIngredient);
+            }
+            else    //ingredient slot is an inventory icon
+            {
+                UpdateIngredientConfirmationButtonStatus();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Grants the player the passed amount of experience.
+    /// </summary>
+    /// <param name="experience">The amount of given experience.</param>
+    private void AddExperience(float experience)
+    {
+        GameState.Experience += experience;
+        if (GameState.Experience >= GameState.NextUnlockTarget) //maximum experience reached
+        {
+            GameState.Experience -= GameState.NextUnlockTarget;
+            GameState.NextUnlockTarget = Mathf.Abs(GameState.NextUnlockTarget * 1.1f);
+            foreach (KeyValuePair<FoodGroupType, bool> pair in GameState.UnlockedFoodGroups)    //unlock next food group
+            {
+                if (GameState.UnlockedFoodGroups[pair.Key] == false)
+                {
+                    GameState.UnlockedFoodGroups[pair.Key] = true;
+                    Log(pair.Key + " unlocked.");
+                    break;
+                }
+            }
+        }
+        progressFillImage.fillAmount = GameState.Experience / GameState.NextUnlockTarget;
+    }
+
+    /// <summary>
+    /// Confirms the current scene ingredients and loads the preparation scene.
+    /// </summary>
     public void ConfirmIngredientSelection()
     {
-        audioSource.PlayOneShot(UIMouseClick);
+        audioSource.PlayOneShot(UIMouseClick);  //written by Cameron Moore.
 
         confirmIngredientsButton.SetActive(false);
         IngredientSlot.OnIngredientSelected -= OnIngredientSelected;
         SceneManager.LoadScene(2);
     }
 
+    /// <summary>
+    /// Loads the frying pan scene.
+    /// </summary>
     public void FinishSlicingIngredients()
     {
         inventoryScrollView.gameObject.SetActive(false);
         SceneManager.LoadScene(3);
     }
 
+    /// <summary>
+    /// Modifies the passed ingredient pieces to be scene-persistent, and lods the next scene.
+    /// </summary>
+    /// <param name="pieces">The list of ingredient pieces to bring to the meal scene.</param>
     public void FinishCookingPieces(List<IngredientPiece> pieces)
     {
         GetComponent<AudioSource>().Play();
@@ -122,48 +204,23 @@ public class UI_PersistentCanvas : MonoBehaviour
         SceneManager.LoadScene(4);
     }
 
+    /// <summary>
+    /// Cleans up scene-persistent objects, adds experience, and loads the fridge scene.
+    /// </summary>
     public void FinishedMeal()
     {
         Destroy(GameManager.Instance.gameObject);
         Destroy(gameObject);
-        GameState.Ingredients.Clear();
-        GameState.Experience += 100;
-        if(GameState.Experience >= GameState.NextUnlockTarget)
-        {
-            GameState.Experience -= GameState.NextUnlockTarget;
-            GameState.NextUnlockTarget = Mathf.Abs(GameState.NextUnlockTarget * 1.1f);
-            foreach (KeyValuePair<FoodGroupType, bool> pair in GameState.UnlockedFoodGroups)
-            {
-                Debug.Log(pair.Key + " - " + pair.Value);
-                if (GameState.UnlockedFoodGroups[pair.Key] == false)
-                {
-                    GameState.UnlockedFoodGroups[pair.Key] = true;
-                    Debug.Log(pair.Key + " unlocked");
-                    break;
-                }
-            }
-        }
-        progressFillImage.fillAmount = GameState.Experience / GameState.NextUnlockTarget;
+        GameState.CurrentIngredients.Clear();
+        AddExperience(100);
         SceneManager.LoadScene(1);
     }
 
-    public bool OnIngredientSelected(IngredientSlot ingredientSlot)
-    {
-        if (ingredientSlot.CurrentIngredient != null)
-        {
-            if (ingredientSlot.IsInventoryIcon == false)
-            {
-                return AddIngredientToInventory(ingredientSlot.CurrentIngredient);
-            }
-            else
-            {
-                UpdateIngredientConfirmationButtonStatus();
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /// <summary>
+    /// Logs the passed message to the console.
+    /// </summary>
+    /// <param name="message">The message being logged.</param>
+    /// <param name="level">Defines the alert level for the message. 0 = normal; 1 = warning; 2 = error.</param>
     public void Log(string message, int level = 0)
     {
         if (debug == true)
