@@ -29,22 +29,30 @@ EditorUserSettings:
 >>>>>>> Cameron
       flags: 0
     RecentlyUsedSceneGuid-5:
-      value: 5057005056575e0e5b5f0a7643715e444516497b2d7823632b7d4435b5b4656d
+      value: 0102575f550c5e020c08587347750d4446164d2f282c76632e791866b6b96d6f
       flags: 0
     RecentlyUsedSceneGuid-6:
+<<<<<<< HEAD
       value: 54570050075450585a575e2349770944154f40282d7a2462287b1860e7e4653e
 <<<<<<< HEAD
 =======
+=======
+      value: 51005005530c515d0e5c5e7112730f44124f197b7d2c7e627e2f1963e3b8603e
+>>>>>>> George
       flags: 0
     RecentlyUsedSceneGuid-7:
-      value: 51005005530c515d0e5c5e7112730f44124f197b7d2c7e627e2f1963e3b8603e
-      flags: 0
-    RecentlyUsedSceneGuid-8:
       value: 5255515754565b0d595e582316700c4412164072297c2232282c4c30e7b2643d
       flags: 0
+    RecentlyUsedSceneGuid-8:
+      value: 5057005056575e0e5b5f0a7643715e444516497b2d7823632b7d4435b5b4656d
+      flags: 0
     RecentlyUsedSceneGuid-9:
+<<<<<<< HEAD
       value: 0102575f550c5e020c08587347750d4446164d2f282c76632e791866b6b96d6f
 >>>>>>> Cameron
+=======
+      value: 54570050075450585a575e2349770944154f40282d7a2462287b1860e7e4653e
+>>>>>>> George
       flags: 0
     UnityRemoteDevice:
       value: 225f4d46245b0d4902070862342649191512
