@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Tomato
   foodGroup: 1
-  fridgeSprite: {fileID: 21300000, guid: bb7faf4c850ef48cdb33c2bd17737619, type: 3}
-  firstSliceSprite: {fileID: 21300000, guid: bb7faf4c850ef48cdb33c2bd17737619, type: 3}
-  lastSliceSprite: {fileID: 21300000, guid: bb7faf4c850ef48cdb33c2bd17737619, type: 3}
-  middleSlicesSprite: {fileID: 21300000, guid: bb7faf4c850ef48cdb33c2bd17737619, type: 3}
-  slicedPrefab: {fileID: 6842503657137693508, guid: 5df7b2f6646844d4c854643a75d0f7a4, type: 3}
+  fridgeSprite: {fileID: 21300000, guid: 0346bbb7405151e499c8f3916cd5ffdc, type: 3}
+  firstSliceSprite: {fileID: 21300000, guid: 93ccaae040b9b7f40a10aea7e5e0439f, type: 3}
+  lastSliceSprite: {fileID: 21300000, guid: 45aa39f2b5769074b886999f52f42a62, type: 3}
+  middleSlicesSprite: {fileID: 21300000, guid: e648a9b9d94152d40bd4aaf70e3cbfee, type: 3}
+  slicedPrefab: {fileID: 6842503657137693508, guid: 6e9589b55a5fd814db1ea825b9711f58, type: 3}

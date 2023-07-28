@@ -41,6 +41,7 @@ public class Meal : MonoBehaviour
                         if (GameState.IngredientPieces.Count == 0)
                         {
                             //GAME OVER
+                            GetComponent<AudioSource>().Play();
                             rewardMessageText.text = rewardMessages[Random.Range(0, rewardMessages.Length)];
                             rewardMessageText.transform.root.gameObject.SetActive(true);
                         }

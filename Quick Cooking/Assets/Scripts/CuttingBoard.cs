@@ -10,6 +10,9 @@ public class CuttingBoard : MonoBehaviour, ILoggable
     [Tooltip("The amount of time the player has to lift their finger when slicing.")]
     [SerializeField] private float sliceTime = 0.5f;
 
+    AudioSource audioSource;
+    [SerializeField] AudioClip[] slicingFoodSFX;
+
     private Vector2 sliceStart = Vector2.zero;
     private Vector2 sliceEnd = Vector2.zero;
     private float sliceTimer = -1;
@@ -28,6 +31,8 @@ public class CuttingBoard : MonoBehaviour, ILoggable
             Instance = this;
             sliceableObject.gameObject.SetActive(false);
             IngredientSlot.OnIngredientSelected += OnIngredientSelected;
+
+            audioSource = GetComponent<AudioSource>();
         }
     }
 
@@ -69,6 +74,9 @@ public class CuttingBoard : MonoBehaviour, ILoggable
                     RaycastHit2D hit = Physics2D.Raycast(sliceStart, sliceEnd - sliceStart);
                     if (hit.collider != null && hit.collider.gameObject == sliceableObject.gameObject)
                     {
+                        int chooseRandomSlicingSound = Random.Range(0, slicingFoodSFX.Length);
+                        audioSource.PlayOneShot(slicingFoodSFX[chooseRandomSlicingSound]);
+
                         if (sliceableObject.Slice() == true)
                         {
                             Log("FINISHED SLICING INGREDIENT");

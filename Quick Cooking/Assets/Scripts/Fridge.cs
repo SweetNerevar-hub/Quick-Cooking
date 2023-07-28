@@ -8,6 +8,8 @@ public class Fridge : MonoBehaviour, ILoggable
     [Tooltip("Defines the amount of ingredients per group that will populate the fridge.")]
     [SerializeField] private int startingIngredientsPerGroup = 3;
 
+    [SerializeField] AudioClip[] grabFoodSounds;
+
     private int ingredientsPerGroup = 0;
     private List<Ingredient> currentIngredients;
     private List<IngredientSlot> fridgeIngredientSlots;
@@ -102,6 +104,9 @@ public class Fridge : MonoBehaviour, ILoggable
 
     public bool OnIngredientSelected(IngredientSlot ingredientSlot)
     {
+        int randomAudioClip = Random.Range(0, grabFoodSounds.Length);
+        GetComponent<AudioSource>().PlayOneShot(grabFoodSounds[randomAudioClip]);
+
         if (ingredientSlot.IsInventoryIcon == true)
         {
             if (ingredientSlot.CurrentIngredient != null)
