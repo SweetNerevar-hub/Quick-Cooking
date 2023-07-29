@@ -147,4 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookingTime: 10
-  brownColor: {r: 0.49056602, g: 0.2705762, b: 0.06247775, a: 1}
+  brownColor: {r: 0.5754717, g: 0.48379415, b: 0.06786222, a: 1}
