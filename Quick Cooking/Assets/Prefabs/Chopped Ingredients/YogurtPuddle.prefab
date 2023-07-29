@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2101837555324952484}
   - component: {fileID: 6842503657137693508}
   m_Layer: 0
-  m_Name: PotatoSlice
+  m_Name: YogurtPuddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: d29e360dc585ff34ebe6a0646311fe2f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 10990b3835c97fc4e916f1d73d3ed080, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
