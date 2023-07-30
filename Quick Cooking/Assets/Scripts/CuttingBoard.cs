@@ -12,6 +12,8 @@ public class CuttingBoard : MonoBehaviour, ILoggable
     [SerializeField] private SliceableIngredient sliceableObject;
     [Tooltip("The amount of time the player has to 'complete' a slice.")]
     [SerializeField] private float sliceTime = 0.5f;
+    [Tooltip("The minimum distance for a swipe to qualify as a slice.")]
+    [SerializeField] [Range(0, 1)] private float minSliceDistance = 0.35f;
 
     AudioSource audioSource;    //written by Cameron Moore
     [SerializeField] AudioClip[] slicingFoodSFX;    //written by Cameron Moore
@@ -89,7 +91,8 @@ public class CuttingBoard : MonoBehaviour, ILoggable
             {
                 sliceTimer = -1;
                 sliceEnd = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                if (sliceEnd != sliceStart)     //check the touch was not just a tap (start/end are the same)
+                Log($"Slice distance: {Vector2.Distance(sliceStart, sliceEnd)}");
+                if (sliceEnd != sliceStart && Vector2.Distance(sliceStart, sliceEnd) >= minSliceDistance)     //check the touch was not just a tap (start/end are the same)
                 {
                     RaycastHit2D hit = Physics2D.Raycast(sliceStart, sliceEnd - sliceStart);
                     if (hit.collider != null && hit.collider.gameObject == sliceableObject.gameObject)
@@ -99,7 +102,7 @@ public class CuttingBoard : MonoBehaviour, ILoggable
 
                         if (sliceableObject.Slice() == true)
                         {
-                            Log("FINISHED SLICING INGREDIENT");
+                            Log("Finished preparing ingredient.");
                             sliceableObject.gameObject.SetActive(false);
                             if (preparedIngredients.Count == GameState.CurrentIngredients.Count)
                             {

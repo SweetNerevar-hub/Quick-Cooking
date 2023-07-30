@@ -18,6 +18,10 @@ public class UIScrollingImage : MonoBehaviour
     private void Awake()
     {
         TryGetComponent(out image);
+        if(image.material != null)
+        {
+            image.material.mainTextureOffset = Vector2.zero;
+        }
     }
 
     /// <summary>

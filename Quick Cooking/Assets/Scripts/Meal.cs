@@ -6,6 +6,8 @@ using UnityEngine.UI;
 /// </summary>
 public class Meal : MonoBehaviour
 {
+    [Tooltip("The radius surrounding the input position for detecting ingredient pieces.")]
+    [SerializeField] private float eatTouchRadius = 0.2f;
     [Tooltip("A reference to the text object that displays reward messages.")]
     [SerializeField] private Text rewardMessageText;
     [Tooltip("The range of reward messages that will be displayed to the player.")]
@@ -45,7 +47,7 @@ public class Meal : MonoBehaviour
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)    //touch detected
             {
-                Collider2D hit = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position));
+                Collider2D hit = Physics2D.OverlapCircle(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), eatTouchRadius);
                 if (hit != null)
                 {
                     if (hit.TryGetComponent(out IngredientPiece piece) == true)
