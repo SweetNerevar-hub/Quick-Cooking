@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2101837555324952484}
   - component: {fileID: 6842503657137693508}
   m_Layer: 0
-  m_Name: ButterCube
+  m_Name: SingleSunflowerSeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: fae2d3ed9ffe7514e914c38dc5cf0766, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee87fc80f3bce424892e41d7d1e0638b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -147,4 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookingTime: 10
-  brownColor: {r: 0.6981132, g: 0.6696267, b: 0, a: 1}
+  brownColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}

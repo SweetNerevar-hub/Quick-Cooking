@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 394fcb3521d0cae4b918164dcda51682, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d29e360dc585ff34ebe6a0646311fe2f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -147,4 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cookingTime: 10
-  brownColor: {r: 0.49056602, g: 0.2705762, b: 0.06247775, a: 1}
+  brownColor: {r: 0.5377358, g: 0.42432624, b: 0.12428801, a: 1}
