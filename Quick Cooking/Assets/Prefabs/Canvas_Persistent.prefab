@@ -2050,6 +2050,7 @@ MonoBehaviour:
   inventoryScrollView: {fileID: 1861570728}
   confirmIngredientsButton: {fileID: 453659241}
   progressFillImage: {fileID: 4489468332044692081}
+  experiencedPerStage: 25
   UIMouseClick: {fileID: 8300000, guid: 41ab6323d1cf8324f94a550904449dfb, type: 3}
 --- !u!82 &4489468331038002316
 AudioSource:
@@ -2234,6 +2235,7 @@ GameObject:
   - component: {fileID: 4489468332044692080}
   - component: {fileID: 4489468332044692086}
   - component: {fileID: 4489468332044692081}
+  - component: {fileID: 7457996205494784718}
   m_Layer: 5
   m_Name: Image_ProgressFG
   m_TagString: Untagged
@@ -2289,7 +2291,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f8f919528929444d38fb2c14ee234bb1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4d07b2098820749219726c7524130fdf, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2299,3 +2301,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7457996205494784718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4489468332044692083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1

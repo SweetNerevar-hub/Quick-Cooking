@@ -18,6 +18,14 @@ public class UI_PersistentCanvas : MonoBehaviour
     [SerializeField] private GameObject confirmIngredientsButton;
     [Tooltip("Reference to the foreground fill image of the progress bar.")]
     [SerializeField] private Image progressFillImage;
+    [Tooltip("The amount of experience the player earns at the end of each stage.")]
+    [SerializeField] private float experienceTransitionTime = 1f;
+    [Tooltip("The amount of experience the player earns at the end of each stage.")]
+    [SerializeField] private float experiencedPerStage = 25;
+
+    private float progressBarStartValue = 0;
+    private float progressBarTargetValue = 0;
+    private float progressBarTimer = -1f;
 
     private AudioSource audioSource;    //written by Cameron Moore.
     [SerializeField] private AudioClip UIMouseClick;    //written by Cameron Moore.
@@ -68,6 +76,27 @@ public class UI_PersistentCanvas : MonoBehaviour
         }
         confirmIngredientsButton.SetActive(false);
         progressFillImage.fillAmount = GameState.Experience / GameState.NextUnlockTarget;
+    }
+
+    private void Update()
+    {
+        if(progressBarTimer >= 0)
+        {
+            progressBarTimer += Time.deltaTime;
+            float step = Mathf.Lerp(progressBarStartValue, progressBarTargetValue, progressBarTimer / experienceTransitionTime);
+            if(step > 1)
+            {
+                progressBarStartValue = 0;
+                progressBarTargetValue -= 1;
+                step = Mathf.Lerp(progressBarStartValue, progressBarTargetValue, progressBarTimer / experienceTransitionTime);
+            }
+            progressFillImage.fillAmount = step;
+            if (progressBarTimer > experienceTransitionTime)
+            {
+                progressBarTimer = -1;
+                progressBarStartValue = 0;
+            }
+        }
     }
 
     /// <summary>
@@ -145,6 +174,7 @@ public class UI_PersistentCanvas : MonoBehaviour
     private void AddExperience(float experience)
     {
         GameState.Experience += experience;
+        progressBarTargetValue = GameState.Experience / GameState.NextUnlockTarget;
         if (GameState.Experience >= GameState.NextUnlockTarget) //maximum experience reached
         {
             GameState.Experience -= GameState.NextUnlockTarget;
@@ -159,7 +189,8 @@ public class UI_PersistentCanvas : MonoBehaviour
                 }
             }
         }
-        progressFillImage.fillAmount = GameState.Experience / GameState.NextUnlockTarget;
+        progressBarTimer = 0;
+        progressBarStartValue = progressFillImage.fillAmount;
     }
 
     /// <summary>
@@ -171,6 +202,7 @@ public class UI_PersistentCanvas : MonoBehaviour
 
         confirmIngredientsButton.SetActive(false);
         IngredientSlot.OnIngredientSelected -= OnIngredientSelected;
+        AddExperience(experiencedPerStage);
         SceneManager.LoadScene(2);
     }
 
@@ -180,6 +212,7 @@ public class UI_PersistentCanvas : MonoBehaviour
     public void FinishSlicingIngredients()
     {
         inventoryScrollView.gameObject.SetActive(false);
+        AddExperience(experiencedPerStage);
         SceneManager.LoadScene(3);
     }
 
@@ -201,6 +234,7 @@ public class UI_PersistentCanvas : MonoBehaviour
         {
             GameState.IngredientPieces.Add(piece);
         }
+        AddExperience(experiencedPerStage);
         SceneManager.LoadScene(4);
     }
 
@@ -212,7 +246,7 @@ public class UI_PersistentCanvas : MonoBehaviour
         Destroy(GameManager.Instance.gameObject);
         Destroy(gameObject);
         GameState.CurrentIngredients.Clear();
-        AddExperience(100);
+        AddExperience(experiencedPerStage);
         SceneManager.LoadScene(1);
     }
 
