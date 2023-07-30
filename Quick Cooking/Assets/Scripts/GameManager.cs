@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class handles general game management data and functionality.
+/// The singleton object will persist between scenes.
+/// </summary>
 public class GameManager : MonoBehaviour, ILoggable
 {
     [Tooltip("Enable to print debug messages to the console.")]
@@ -11,20 +15,26 @@ public class GameManager : MonoBehaviour, ILoggable
     [Tooltip("Defines how many ingredients from each group get unlocked when the game starts.")]
     [SerializeField] private int unlockedIngredientsPerGroup = 3;
 
+    /// <summary>
+    /// The current instance of the game manager.
+    /// </summary>
     public static GameManager Instance { get; private set; }
 
+    /// <summary>
+    /// Executed when the object first loads.
+    /// </summary>
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null)   //a cutting board already exists
         {
             Destroy(this);
         }
-        else
+        else   //setup singleton
         {
             Instance = this;
             DontDestroyOnLoad(this);
-            //unlock random ingredients for each group
-            unlockedIngredientsPerGroup = unlockedIngredientsPerGroup <= 0 ? 1 : unlockedIngredientsPerGroup; //make sure default ingredients is at least 1
+            unlockedIngredientsPerGroup = unlockedIngredientsPerGroup <= 0 ? 1 : unlockedIngredientsPerGroup; //make sure default ingredients per group is at least 1
+            //unlock random ingredients for each group and log results
             Log($"Unlocked random ingredients in {FoodGroupType.dairy.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.dairy, unlockedIngredientsPerGroup).ToString().ToUpper()}");
             Log($"Unlocked random ingredients in {FoodGroupType.fruit.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.fruit, unlockedIngredientsPerGroup).ToString().ToUpper()}");
             Log($"Unlocked random ingredients in {FoodGroupType.grain.ToString().ToUpper()}: {UnlockRandomIngredientInGroup(FoodGroupType.grain, unlockedIngredientsPerGroup).ToString().ToUpper()}");
@@ -33,6 +43,9 @@ public class GameManager : MonoBehaviour, ILoggable
         }
     }
 
+    /// <summary>
+    /// Executes when the object is destroyed.
+    /// </summary>
     private void OnDestroy()
     {
         if (Instance == this)
@@ -44,8 +57,10 @@ public class GameManager : MonoBehaviour, ILoggable
     /// <summary>
     /// Returns all unlocked ingredients within a given food group.
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="ingredients">The list of ingredients to search.</param>
+    /// <param name="type">The type of food group the ingredients must match.</param>
+    /// <returns>Returns null if the number of ingredients matching the passed food group is not more than 0.
+    /// Otherwise returns the list of found ingredients matching the passed food group.</returns>
     public List<Ingredient> GetFoodGroupIngredients(List<Ingredient> ingredients, FoodGroupType type)
     {
         List<Ingredient> groupIngredients = new List<Ingredient>();
@@ -61,11 +76,11 @@ public class GameManager : MonoBehaviour, ILoggable
     }
 
     /// <summary>
-    /// Returns the given amount of randomly selected of ingredients from the provided list of ingredients.
+    /// Gets a random group of ingredients from the passed ingredient list.
     /// </summary>
-    /// <param name="ingredients"></param>
-    /// <param name="maxAmount"></param>
-    /// <returns></returns>
+    /// <param name="ingredients">The list of ingredients to randomly select ingredients from.</param>
+    /// <param name="maxAmount">The maximum number of ingredients that can be included in the returned group.</param>
+    /// <returns>Returns a list of ingredients, randomly selected from the passed list of ingredients, that will not exceed the passed maximum amount.</returns>
     public List<Ingredient> GetRandomIngredients(List<Ingredient> ingredients, int maxAmount)
     {
         if (ingredients.Count == 0) { return null; }
@@ -83,6 +98,9 @@ public class GameManager : MonoBehaviour, ILoggable
     /// <summary>
     /// Unlocks the given amount of randomly selected ingredients from the specified food group.
     /// </summary>
+    /// <param name="type">The type of food group to unlock ingredients from.</param>
+    /// <param name="amount">The number of ingredients to unlock.</param>
+    /// <returns>Returns true if the passed number (or when the final ingredient for a food group) has been unlocked.</returns>
     private bool UnlockRandomIngredientInGroup(FoodGroupType type, int amount = 1)
     {
         if (GameState.UnlockedFoodGroups[type] == true)
@@ -132,6 +150,11 @@ public class GameManager : MonoBehaviour, ILoggable
         return false;
     }
 
+    /// <summary>
+    /// Logs the passed message to the console.
+    /// </summary>
+    /// <param name="message">The message being logged.</param>
+    /// <param name="level">Defines the alert level for the message. 0 = normal; 1 = warning; 2 = error.</param>
     public void Log(string message, int level = 0)
     {
         if (debug == true)
@@ -153,13 +176,22 @@ public class GameManager : MonoBehaviour, ILoggable
     }
 }
 
+/// <summary>
+/// Interface to mark a class as loggable.
+/// </summary>
 public interface ILoggable
 {
     void Log(string message, int level = 0);
 }
 
+/// <summary>
+/// This static class contains the game data for a session.
+/// </summary>
 public static class GameState
 {
+    /// <summary>
+    /// Tracks the food groups and their unlock status.
+    /// </summary>
     public static readonly Dictionary<FoodGroupType, bool> UnlockedFoodGroups = new Dictionary<FoodGroupType, bool>
     {
         { FoodGroupType.dairy, false},
@@ -168,9 +200,24 @@ public static class GameState
         { FoodGroupType.protein, false},
         { FoodGroupType.vegetable, true}
     };
+    /// <summary>
+    /// Tracks all of the unlocked ingredients.
+    /// </summary>
     public static readonly List<Ingredient> UnlockedIngredients = new List<Ingredient>();
-    public static List<Ingredient> Ingredients { get; private set; } = new List<Ingredient>();
+    /// <summary>
+    /// Tracks the player's current ingredients.
+    /// </summary>
+    public static List<Ingredient> CurrentIngredients { get; private set; } = new List<Ingredient>();
+    /// <summary>
+    /// Tracks references to all spawned ingredient pieces.
+    /// </summary>
     public static List<IngredientPiece> IngredientPieces { get; private set; } = new List<IngredientPiece>();
+    /// <summary>
+    /// The player's current experience.
+    /// </summary>
     public static float Experience { get; set; } = 0;
+    /// <summary>
+    /// The current experience threshold.
+    /// </summary>
     public static float NextUnlockTarget { get; set; } = 100;
 }
